@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -30,6 +31,7 @@ import co.zimly.bytrain.screens.Profile
 import co.zimly.bytrain.ui.theme.ByTrainTheme
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalAnimationApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon:
     object Profile : Screen("profile", R.string.profile, Icons.Filled.Person)
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun ByTrainApp() {
@@ -96,6 +99,7 @@ fun ByTrainApp() {
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable

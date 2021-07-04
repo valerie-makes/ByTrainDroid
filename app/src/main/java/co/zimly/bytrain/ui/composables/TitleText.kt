@@ -2,6 +2,7 @@ package co.zimly.bytrain.ui.composables
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,10 +17,11 @@ import co.zimly.bytrain.ui.theme.InterFontFamily
 
 @Composable
 fun TitleText(text: String) {
-    Spacer(Modifier.height(24.dp))
     Text(
         text,
-        Modifier.semantics { heading() },
+        Modifier
+            .semantics { heading() }
+            .padding(top = 24.dp),
         style = TextStyle(
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,
