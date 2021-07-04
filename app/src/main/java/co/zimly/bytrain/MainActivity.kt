@@ -24,6 +24,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import co.zimly.bytrain.screens.Journeys
+import co.zimly.bytrain.screens.LiveTrains
+import co.zimly.bytrain.screens.Planner
+import co.zimly.bytrain.screens.Profile
 import co.zimly.bytrain.ui.theme.ByTrainTheme
 
 class MainActivity : ComponentActivity() {
@@ -86,9 +89,9 @@ fun ByTrainApp() {
             Modifier.padding(innerPadding)
         ) {
             composable(Screen.Journeys.route) { Journeys(navController) }
-            composable(Screen.Planner.route) { Text("Planner") }
-            composable(Screen.LiveTrains.route) { Journeys(navController) }
-            composable(Screen.Profile.route) { Text("Profile") }
+            composable(Screen.Planner.route) { Planner(navController) }
+            composable(Screen.LiveTrains.route) { LiveTrains(navController) }
+            composable(Screen.Profile.route) { Profile(navController) }
         }
     }
 }

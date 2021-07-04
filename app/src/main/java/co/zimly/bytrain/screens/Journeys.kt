@@ -111,8 +111,9 @@ fun Journeys(navController: NavController) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                val byTrainPro = stringResource(R.string.bytrain_pro)
                 Row(
-                    Modifier.semantics { contentDescription = "ByTrain Pro" },
+                    Modifier.semantics { contentDescription = byTrainPro },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
@@ -129,7 +130,7 @@ fun Journeys(navController: NavController) {
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        "PRO",
+                        stringResource(R.string.pro_caps),
                         Modifier
                             .clip(RoundedCornerShape(8.dp))
                             .background(MaterialTheme.colors.primary)
