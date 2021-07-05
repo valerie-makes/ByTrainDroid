@@ -23,6 +23,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
+import co.zimly.bytrain.Screen
+import co.zimly.bytrain.composables.Section
 import co.zimly.bytrain.composables.TitleText
 
 @ExperimentalAnimationApi
@@ -78,12 +80,19 @@ fun Planner(navController: NavController) {
 
         Spacer(Modifier.height(16.dp))
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate("${Screen.Planner.route}/newjourney")
+            },
             Modifier.fillMaxWidth(),
         ) {
             Icon(Icons.Filled.Create, contentDescription = null)
             Spacer(Modifier.width(ButtonDefaults.IconSpacing))
             Text(stringResource(R.string.new_journey))
+        }
+
+        Spacer(Modifier.height(8.dp))
+        Section(stringResource(R.string.recents)) {
+
         }
     }
 }

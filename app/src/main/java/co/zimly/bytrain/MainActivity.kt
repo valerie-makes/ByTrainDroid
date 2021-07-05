@@ -3,19 +3,12 @@ package co.zimly.bytrain
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.StringRes
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Train
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -24,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import co.zimly.bytrain.screens.Journeys
 import co.zimly.bytrain.screens.LiveTrains
 import co.zimly.bytrain.screens.Planner
@@ -46,13 +40,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
-    object Journeys : Screen("journeys", R.string.journeys, Icons.Filled.Map)
-    object Planner : Screen("planner", R.string.planner, Icons.Filled.DateRange)
-    object LiveTrains : Screen("livetrains", R.string.live_trains, Icons.Filled.Train)
-    object Profile : Screen("profile", R.string.profile, Icons.Filled.Person)
-}
-
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
@@ -62,15 +49,28 @@ fun ByTrainApp() {
 
     Scaffold(bottomBar = {
         BottomNavigation {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentHierarchy = navBackStackEntry?.destination?.hierarchy
+            // current destination hierarchy (not to be confused with the entire back stack)
+            val currentBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentHierarchy = currentBackStackEntry?.destination?.hierarchy
+
+            // previous destination hierarchy (the screen which appears when navigating back)
+            val previousBackStackEntry = navController.previousBackStackEntry
+            val previousHierarchy = previousBackStackEntry?.destination?.hierarchy
 
             screens.forEach { screen ->
+                // whether the current destination + previous destination belong to this screen
+                val screenIsSelected = currentHierarchy?.any { it.route == screen.route } == true
+                val previousMatches = previousHierarchy?.any { it.route == screen.route } == true
+
                 BottomNavigationItem(
                     icon = { Icon(screen.icon, contentDescription = null) },
                     label = { Text(stringResource(screen.resourceId)) },
-                    selected = currentHierarchy?.any { it.route == screen.route } == true,
+                    selected = screenIsSelected,
                     onClick = {
+                        if (screenIsSelected && previousMatches) {
+                            navController.popBackStack()
+                        }
+
                         navController.navigate(screen.route) {
                             // Pop up to start to avoid building up back stack
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -92,7 +92,15 @@ fun ByTrainApp() {
             Modifier.padding(innerPadding)
         ) {
             composable(Screen.Journeys.route) { Journeys(navController) }
-            composable(Screen.Planner.route) { Planner(navController) }
+
+            navigation(
+                startDestination = Screen.Planner.indexRoute,
+                route = Screen.Planner.route
+            ) {
+                composable(Screen.Planner.indexRoute) { Planner(navController) }
+                composable(Screen.Planner.NewJourney.route) { Text("New Journey") }
+            }
+
             composable(Screen.LiveTrains.route) { LiveTrains(navController) }
             composable(Screen.Profile.route) { Profile(navController) }
         }
