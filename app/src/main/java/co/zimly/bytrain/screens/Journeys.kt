@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
 import co.zimly.bytrain.Screen
-import co.zimly.bytrain.ui.composables.Section
-import co.zimly.bytrain.ui.composables.TitleText
+import co.zimly.bytrain.composables.Section
+import co.zimly.bytrain.composables.TitleText
 
 @ExperimentalMaterialApi
 @Composable

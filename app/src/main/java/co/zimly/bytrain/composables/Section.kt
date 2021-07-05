@@ -1,4 +1,4 @@
-package co.zimly.bytrain.ui.composables
+package co.zimly.bytrain.composables
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text

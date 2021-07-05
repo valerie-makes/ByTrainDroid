@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
-import co.zimly.bytrain.ui.composables.TitleText
+import co.zimly.bytrain.composables.TitleText
 
 @Composable
 fun Profile(navController: NavController) {
