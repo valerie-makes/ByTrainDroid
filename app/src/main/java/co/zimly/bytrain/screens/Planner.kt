@@ -81,7 +81,7 @@ fun Planner(navController: NavController) {
         Spacer(Modifier.height(16.dp))
         Button(
             onClick = {
-                navController.navigate("${Screen.Planner.route}/newjourney")
+                navController.navigate(Screen.Planner.NewJourney.route)
             },
             Modifier.fillMaxWidth(),
         ) {

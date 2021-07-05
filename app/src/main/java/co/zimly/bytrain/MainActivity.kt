@@ -22,6 +22,7 @@ import co.zimly.bytrain.screens.Journeys
 import co.zimly.bytrain.screens.LiveTrains
 import co.zimly.bytrain.screens.Planner
 import co.zimly.bytrain.screens.Profile
+import co.zimly.bytrain.screens.planner.NewJourney
 import co.zimly.bytrain.ui.theme.ByTrainTheme
 
 class MainActivity : ComponentActivity() {
@@ -98,7 +99,7 @@ fun ByTrainApp() {
                 route = Screen.Planner.route
             ) {
                 composable(Screen.Planner.indexRoute) { Planner(navController) }
-                composable(Screen.Planner.NewJourney.route) { Text("New Journey") }
+                composable(Screen.Planner.NewJourney.route) { NewJourney(navController) }
             }
 
             composable(Screen.LiveTrains.route) { LiveTrains(navController) }
