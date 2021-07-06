@@ -23,7 +23,7 @@ import co.zimly.bytrain.screens.LiveTrains
 import co.zimly.bytrain.screens.Planner
 import co.zimly.bytrain.screens.Profile
 import co.zimly.bytrain.screens.planner.NewJourney
-import co.zimly.bytrain.ui.theme.ByTrainTheme
+import co.zimly.bytrain.theme.ByTrainTheme
 
 class MainActivity : ComponentActivity() {
     @ExperimentalAnimationApi

@@ -1,4 +1,4 @@
-package co.zimly.bytrain.ui.theme
+package co.zimly.bytrain.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
