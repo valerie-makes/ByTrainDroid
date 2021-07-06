@@ -30,6 +30,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
     ),
+    h6 = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp,
+    ),
     /* Other default text styles to override
     caption = TextStyle(
         fontFamily = FontFamily.Default,
