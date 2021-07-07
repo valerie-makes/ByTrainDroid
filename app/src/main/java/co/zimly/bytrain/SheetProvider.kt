@@ -24,16 +24,21 @@ interface SheetManager {
 
 val LocalSheetManager = compositionLocalOf<SheetManager> { error("No SheetManager found!") }
 
+// Store sheet content in an object outside the composable so that it persists across
+// screen rotations. (`rememberSaveable` doesn't work due to the complex data type.)
+// The property should ideally be stored with `MutableLiveData` so that the view
+// can observe when it changes, but an internal compiler bug prevents doing this.
+private object SheetContent {
+    var content: @Composable ColumnScope.() -> Unit = {}
+}
+
 @ExperimentalMaterialApi
 @Composable
 fun SheetProvider(content: @Composable () -> Unit) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
     val sheetState = scaffoldState.bottomSheetState
-
-    var sheetContent by remember {
-        mutableStateOf<(@Composable ColumnScope.() -> Unit)>({})
-    }
+    val sheetContent = SheetContent.content
 
     val sheetManager by remember {
         derivedStateOf {
@@ -42,7 +47,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
                 override fun present(content: @Composable ColumnScope.() -> Unit) {
                     isExpanding = true
-                    sheetContent = content
+                    SheetContent.content = content
                     scope.launch { sheetState.expand() }
                 }
 
@@ -59,7 +64,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
     // free up memory once the sheet is collapsed
     if (sheetState.isCollapsed && !sheetManager.isExpanding) {
-        sheetContent = {}
+        SheetContent.content = {}
     }
 
     // `sheetState.isExpanded` only updates when the sheet is finished animating.
