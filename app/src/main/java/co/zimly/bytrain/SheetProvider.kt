@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 interface SheetManager {
-    fun present(content: @Composable ColumnScope.() -> Unit)
+    fun present(content: @Composable ColumnScope.(SheetManager) -> Unit)
     fun collapse()
 }
 
@@ -28,7 +28,7 @@ val LocalSheetManager = compositionLocalOf<SheetManager> { error("No SheetManage
 // The property should ideally be stored with `MutableLiveData` so that the view
 // can observe when it changes, but an internal compiler bug prevents doing this.
 private object SheetContent {
-    var content: @Composable ColumnScope.() -> Unit = {}
+    var content: @Composable ColumnScope.(SheetManager) -> Unit = {}
 }
 
 @ExperimentalMaterialApi
@@ -43,7 +43,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
     val sheetManager by remember {
         derivedStateOf {
             object : SheetManager {
-                override fun present(content: @Composable ColumnScope.() -> Unit) {
+                override fun present(content: @Composable ColumnScope.(SheetManager) -> Unit) {
                     isExpanding = true
                     SheetContent.content = content
                     scope.launch { sheetState.expand() }
@@ -87,7 +87,11 @@ fun SheetProvider(content: @Composable () -> Unit) {
     }
 
     BottomSheetScaffold(
-        sheetContent = { Column(Modifier.fillMaxHeight(), content = sheetContent) },
+        sheetContent = {
+            Column(
+                Modifier.fillMaxHeight(),
+                content = { sheetContent(sheetManager) })
+        },
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
     ) { innerPadding ->

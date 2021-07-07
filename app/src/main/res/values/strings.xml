@@ -18,4 +18,6 @@
     <string name="recents">Recents</string>
     <string name="back">Back</string>
     <string name="find">Find</string>
+    <string name="about">About</string>
+    <string name="done">Done</string>
 </resources>
