@@ -16,8 +16,10 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
+typealias SheetContent = @Composable ColumnScope.(SheetController) -> Unit
+
 interface SheetController {
-    fun present(content: @Composable ColumnScope.(SheetController) -> Unit)
+    fun present(content: SheetContent)
     fun collapse()
 }
 
@@ -27,8 +29,8 @@ val LocalSheetController = compositionLocalOf<SheetController> { error("No Sheet
 // screen rotations. (`rememberSaveable` doesn't work due to the complex data type.)
 // The property should ideally be stored with `MutableLiveData` so that the view
 // can observe when it changes, but an internal compiler bug prevents doing this.
-private object SheetContent {
-    var content: @Composable ColumnScope.(SheetController) -> Unit = {}
+private object SheetContentWrapper {
+    var value: SheetContent = {}
 }
 
 @ExperimentalMaterialApi
@@ -37,15 +39,15 @@ fun SheetProvider(content: @Composable () -> Unit) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
     val sheetState = scaffoldState.bottomSheetState
-    val sheetContent = SheetContent.content
+    val sheetContent = SheetContentWrapper.value
     var isExpanding by remember { mutableStateOf(false) }
 
     val sheetController by remember {
         derivedStateOf {
             object : SheetController {
-                override fun present(content: @Composable ColumnScope.(SheetController) -> Unit) {
+                override fun present(content: SheetContent) {
                     isExpanding = true
-                    SheetContent.content = content
+                    SheetContentWrapper.value = content
                     scope.launch { sheetState.expand() }
                 }
 
@@ -62,7 +64,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
     // free up memory once the sheet is collapsed
     if (sheetState.isCollapsed && !isExpanding) {
-        SheetContent.content = {}
+        SheetContentWrapper.value = {}
     }
 
     // `sheetState.isExpanded` only updates when the sheet is finished animating.
