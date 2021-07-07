@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import co.zimly.bytrain.LocalSheetManager
+import co.zimly.bytrain.LocalSheetController
 import co.zimly.bytrain.R
 import co.zimly.bytrain.composables.TitleText
 import co.zimly.bytrain.sheets.About
 
 @Composable
 fun Profile(navController: NavController) {
-    val sheetManager = LocalSheetManager.current
+    val sheetController = LocalSheetController.current
 
     Column(
         Modifier
@@ -28,7 +28,7 @@ fun Profile(navController: NavController) {
         TitleText(stringResource(R.string.profile))
 
         Button(onClick = {
-            sheetManager.present { sheetManager -> About(sheetManager) }
+            sheetController.present { sheetController -> About(sheetController) }
         }) {
             Text(stringResource(R.string.about))
         }

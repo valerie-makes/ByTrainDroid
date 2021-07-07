@@ -9,14 +9,14 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import co.zimly.bytrain.R
-import co.zimly.bytrain.SheetManager
+import co.zimly.bytrain.SheetController
 
 @Composable
-fun About(sheetManager: SheetManager) {
+fun About(sheetController: SheetController) {
     TopAppBar(
         title = { Text(stringResource(R.string.about)) },
         actions = {
-            IconButton(onClick = { sheetManager.collapse() }) {
+            IconButton(onClick = { sheetController.collapse() }) {
                 Icon(Icons.Filled.Done, contentDescription = stringResource(R.string.done))
             }
         }

@@ -16,19 +16,19 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-interface SheetManager {
-    fun present(content: @Composable ColumnScope.(SheetManager) -> Unit)
+interface SheetController {
+    fun present(content: @Composable ColumnScope.(SheetController) -> Unit)
     fun collapse()
 }
 
-val LocalSheetManager = compositionLocalOf<SheetManager> { error("No SheetManager found!") }
+val LocalSheetController = compositionLocalOf<SheetController> { error("No SheetController found!") }
 
 // Store sheet content in an object outside the composable so that it persists across
 // screen rotations. (`rememberSaveable` doesn't work due to the complex data type.)
 // The property should ideally be stored with `MutableLiveData` so that the view
 // can observe when it changes, but an internal compiler bug prevents doing this.
 private object SheetContent {
-    var content: @Composable ColumnScope.(SheetManager) -> Unit = {}
+    var content: @Composable ColumnScope.(SheetController) -> Unit = {}
 }
 
 @ExperimentalMaterialApi
@@ -40,10 +40,10 @@ fun SheetProvider(content: @Composable () -> Unit) {
     val sheetContent = SheetContent.content
     var isExpanding by remember { mutableStateOf(false) }
 
-    val sheetManager by remember {
+    val sheetController by remember {
         derivedStateOf {
-            object : SheetManager {
-                override fun present(content: @Composable ColumnScope.(SheetManager) -> Unit) {
+            object : SheetController {
+                override fun present(content: @Composable ColumnScope.(SheetController) -> Unit) {
                     isExpanding = true
                     SheetContent.content = content
                     scope.launch { sheetState.expand() }
@@ -90,7 +90,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
         sheetContent = {
             Column(
                 Modifier.fillMaxHeight(),
-                content = { sheetContent(sheetManager) })
+                content = { sheetContent(sheetController) })
         },
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
@@ -108,7 +108,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
                 .alpha(blurAmount)
                 .padding(innerPadding)
         ) {
-            CompositionLocalProvider(LocalSheetManager provides sheetManager) {
+            CompositionLocalProvider(LocalSheetController provides sheetController) {
                 content()
             }
         }

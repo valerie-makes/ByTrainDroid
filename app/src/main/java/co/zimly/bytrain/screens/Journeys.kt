@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import co.zimly.bytrain.LocalSheetManager
+import co.zimly.bytrain.LocalSheetController
 import co.zimly.bytrain.R
 import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.composables.Section
@@ -35,7 +35,7 @@ import co.zimly.bytrain.sheets.ByTrainPro
 @ExperimentalMaterialApi
 @Composable
 fun Journeys(navController: NavController) {
-    val sheetManager = LocalSheetManager.current
+    val sheetController = LocalSheetController.current
 
     Column(
         Modifier
@@ -89,7 +89,7 @@ fun Journeys(navController: NavController) {
         Section(title = stringResource(R.string.featured)) {
             Card(
                 onClick = {
-                    sheetManager.present { ByTrainPro() }
+                    sheetController.present { ByTrainPro() }
                 },
                 Modifier
                     .fillMaxWidth()
