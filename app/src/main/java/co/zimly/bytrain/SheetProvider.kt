@@ -21,7 +21,9 @@ typealias SheetContent = @Composable ColumnScope.(SheetController) -> Unit
 interface SheetController {
     fun present(content: SheetContent)
     fun collapse()
-    @Composable fun BackHandler()
+
+    @Composable
+    fun BackHandler()
 }
 
 val LocalSheetController =
@@ -42,9 +44,15 @@ fun SheetProvider(content: @Composable () -> Unit) {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val sheetState = scaffoldState.bottomSheetState
     val sheetContent = SheetContentWrapper.value
+
+    // used to prevent clearing sheet while collapsed but expanding
     var isExpanding by remember { mutableStateOf(false) }
 
-    val sheetController by remember(sheetState) {
+    // used to "free up" the back button as soon as it's been pressed,
+    // rather than having to wait for the sheet to be fully collapsed
+    var backHandlerEnabled by remember { mutableStateOf(true) }
+
+    val sheetController by remember(sheetState, backHandlerEnabled) {
         derivedStateOf {
             object : SheetController {
                 override fun present(content: SheetContent) {
@@ -54,14 +62,15 @@ fun SheetProvider(content: @Composable () -> Unit) {
                 }
 
                 override fun collapse() {
+                    backHandlerEnabled = false
                     scope.launch { sheetState.collapse() }
                 }
 
-                override @Composable fun BackHandler() {
-                    BackHandler(sheetState.isExpanded) {
-                        scope.launch {
-                            sheetState.collapse()
-                        }
+                @Composable
+                override fun BackHandler() {
+                    BackHandler(sheetState.isExpanded && backHandlerEnabled) {
+                        backHandlerEnabled = false
+                        scope.launch { sheetState.collapse() }
                     }
                 }
             }
@@ -70,6 +79,8 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
     if (sheetState.isExpanded) {
         isExpanding = false
+    } else {
+        backHandlerEnabled = true
     }
 
     // free up memory once the sheet is collapsed
