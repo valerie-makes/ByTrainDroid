@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 interface SheetManager {
-    var isExpanding: Boolean
     fun present(content: @Composable ColumnScope.() -> Unit)
     fun collapse()
 }
@@ -39,12 +38,11 @@ fun SheetProvider(content: @Composable () -> Unit) {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val sheetState = scaffoldState.bottomSheetState
     val sheetContent = SheetContent.content
+    var isExpanding by remember { mutableStateOf(false) }
 
     val sheetManager by remember {
         derivedStateOf {
             object : SheetManager {
-                override var isExpanding = false
-
                 override fun present(content: @Composable ColumnScope.() -> Unit) {
                     isExpanding = true
                     SheetContent.content = content
@@ -59,11 +57,11 @@ fun SheetProvider(content: @Composable () -> Unit) {
     }
 
     if (sheetState.isExpanded) {
-        sheetManager.isExpanding = false
+        isExpanding = false
     }
 
     // free up memory once the sheet is collapsed
-    if (sheetState.isCollapsed && !sheetManager.isExpanding) {
+    if (sheetState.isCollapsed && !isExpanding) {
         SheetContent.content = {}
     }
 
