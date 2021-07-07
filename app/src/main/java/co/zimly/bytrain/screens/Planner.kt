@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
-import co.zimly.bytrain.Screen
+import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.composables.Section
 import co.zimly.bytrain.composables.TitleText
 
