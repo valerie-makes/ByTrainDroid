@@ -36,6 +36,7 @@ import co.zimly.bytrain.sheets.ByTrainPro
 @Composable
 fun Journeys(navController: NavController) {
     val sheetController = LocalSheetController.current
+    sheetController.BackHandler()
 
     Column(
         Modifier

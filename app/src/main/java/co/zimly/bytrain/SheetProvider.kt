@@ -21,9 +21,11 @@ typealias SheetContent = @Composable ColumnScope.(SheetController) -> Unit
 interface SheetController {
     fun present(content: SheetContent)
     fun collapse()
+    @Composable fun BackHandler()
 }
 
-val LocalSheetController = compositionLocalOf<SheetController> { error("No SheetController found!") }
+val LocalSheetController =
+    compositionLocalOf<SheetController> { error("No SheetController found!") }
 
 // Store sheet content in an object outside the composable so that it persists across
 // screen rotations. (`rememberSaveable` doesn't work due to the complex data type.)
@@ -42,7 +44,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
     val sheetContent = SheetContentWrapper.value
     var isExpanding by remember { mutableStateOf(false) }
 
-    val sheetController by remember {
+    val sheetController by remember(sheetState) {
         derivedStateOf {
             object : SheetController {
                 override fun present(content: SheetContent) {
@@ -53,6 +55,14 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
                 override fun collapse() {
                     scope.launch { sheetState.collapse() }
+                }
+
+                override @Composable fun BackHandler() {
+                    BackHandler(sheetState.isExpanded) {
+                        scope.launch {
+                            sheetState.collapse()
+                        }
+                    }
                 }
             }
         }
@@ -81,12 +91,6 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
     // 0.875 = 7/8
     val blurAmount by animateFloatAsState(if (blurContent) 0.875f else 1f)
-
-    BackHandler(sheetState.isExpanded) {
-        scope.launch {
-            sheetState.collapse()
-        }
-    }
 
     BottomSheetScaffold(
         sheetContent = {

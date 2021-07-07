@@ -19,6 +19,7 @@ import co.zimly.bytrain.sheets.About
 @Composable
 fun Profile(navController: NavController) {
     val sheetController = LocalSheetController.current
+    sheetController.BackHandler()
 
     Column(
         Modifier
