@@ -124,6 +124,8 @@ fun SheetProvider(content: @Composable () -> Unit) {
         },
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
+        // Prevent gesture dismissal until fully expanded
+        sheetGesturesEnabled = sheetState.isExpanded,
     ) { innerPadding ->
         Box(
             Modifier
