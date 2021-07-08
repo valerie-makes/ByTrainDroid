@@ -50,10 +50,12 @@ fun SheetProvider(content: @Composable () -> Unit) {
     // expanded, and to enable pressing the back button during this period.
     var isExpanding by remember { mutableStateOf(false) }
 
-    // TODO: write explanatory comment here
+    // Used once a tap-initiated collapse has already begun:
+    // - to prevent interruption from a gesture
+    // - to restore the original back handler
     var isCollapsingByTap by remember { mutableStateOf(false) }
 
-    val sheetController by remember(sheetState, isExpanding) {
+    val sheetController by remember(sheetState, isExpanding, isCollapsingByTap) {
         derivedStateOf {
             object : SheetController {
                 override fun present(content: SheetContent) {
@@ -70,20 +72,23 @@ fun SheetProvider(content: @Composable () -> Unit) {
                 }
 
                 override fun collapse() {
-                    isCollapsingByTap = true
-                    scope.launch { sheetState.collapse() }
+                    // Ignore if already collapsing.
+                    if (sheetState.direction != 1f) {
+                        isCollapsingByTap = true
+                        scope.launch { sheetState.collapse() }
+                    }
                 }
 
                 @Composable
                 override fun BackHandler() {
+                    // Enable when expanding/expanded + the sheet isn't already collapsing by tap.
+                    // If the user is swiping away sheet with a gesture but it's not yet at the
+                    // bottom, this back handler should remain enabled. This is to prevent going
+                    // back to a previous page before the sheet is actually collapsed.
                     BackHandler(
-                        // when expanding or expanded + the sheet isn't already collapsing
-                        enabled = sheetState.direction != 1f &&
-                                (isExpanding || sheetState.isExpanded),
-                    ) {
-                        isCollapsingByTap = true
-                        scope.launch { sheetState.collapse() }
-                    }
+                        enabled = (isExpanding || sheetState.isExpanded) && !isCollapsingByTap,
+                        onBack = ::collapse,
+                    )
                 }
             }
         }
@@ -125,7 +130,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
         },
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
-        // Prevent gesture dismissal during expansion and collapse
+        // Prevent gesture dismissal during expansion and collapsing by tap.
         sheetGesturesEnabled = sheetState.isExpanded && !isCollapsingByTap,
     ) { innerPadding ->
         Box(
