@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
 typealias SheetContent = @Composable ColumnScope.(SheetController) -> Unit
@@ -45,20 +46,28 @@ fun SheetProvider(content: @Composable () -> Unit) {
     val sheetState = scaffoldState.bottomSheetState
     val sheetContent = SheetContentWrapper.value
 
-    // used to prevent clearing sheet while collapsed but expanding
+    // Used to prevent clearing the sheet while it's expanding but not fully
+    // expanded, and to enable pressing the back button during this period.
     var isExpanding by remember { mutableStateOf(false) }
 
-    // used to "free up" the back button as soon as it's been pressed,
-    // rather than having to wait for the sheet to be fully collapsed
+    // Used to restore the back button as soon as it's been pressed,
+    // rather than having to wait for the sheet to be fully collapsed.
     var backHandlerEnabled by remember { mutableStateOf(true) }
 
-    val sheetController by remember(sheetState, backHandlerEnabled) {
+    val sheetController by remember(sheetState, isExpanding, backHandlerEnabled) {
         derivedStateOf {
             object : SheetController {
                 override fun present(content: SheetContent) {
                     isExpanding = true
                     SheetContentWrapper.value = content
-                    scope.launch { sheetState.expand() }
+
+                    scope.launch {
+                        try {
+                            sheetState.expand()
+                        } catch (e: CancellationException) {
+                            isExpanding = false
+                        }
+                    }
                 }
 
                 override fun collapse() {
@@ -68,7 +77,9 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
                 @Composable
                 override fun BackHandler() {
-                    BackHandler(sheetState.isExpanded && backHandlerEnabled) {
+                    BackHandler(
+                        enabled = backHandlerEnabled && (isExpanding || sheetState.isExpanded),
+                    ) {
                         backHandlerEnabled = false
                         scope.launch { sheetState.collapse() }
                     }
@@ -83,8 +94,9 @@ fun SheetProvider(content: @Composable () -> Unit) {
         backHandlerEnabled = true
     }
 
-    // free up memory once the sheet is collapsed
-    if (sheetState.isCollapsed && !isExpanding) {
+    // Free up memory once the sheet is collapsed. Check for both `direction`
+    // and `isCollapsed` in case of a collapse during initial expansion.
+    if (!isExpanding && sheetState.isCollapsed && sheetState.direction == 0f) {
         SheetContentWrapper.value = {}
     }
 
@@ -92,11 +104,12 @@ fun SheetProvider(content: @Composable () -> Unit) {
     // `blurContent` is similar to `sheetState.isExpanded` but updates as soon as the
     // animation starts, in order to animate the background content simultaneously.
     val blurContent = when (sheetState.direction) {
-        // sheet is moving down
+        // The sheet is moving down.
         1f -> false
-        // sheet is moving up
-        -1f -> true
-        // sheet has reached the top/bottom
+        // The sheet is moving up, or may be moving down if collapsed during initial
+        // expansion. In case of this, use `isExpanding` to determine whether to blur.
+        -1f -> isExpanding
+        // The sheet has stopped moving.
         else -> sheetState.isExpanded
     }
 
