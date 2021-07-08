@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import co.zimly.bytrain.LocalSheetController
 import co.zimly.bytrain.R
-import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.composables.Section
 import co.zimly.bytrain.composables.TitleText
+import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.sheets.ByTrainPro
 
 @ExperimentalMaterialApi
@@ -92,10 +91,9 @@ fun Journeys(navController: NavController) {
                 onClick = {
                     sheetController.present { ByTrainPro() }
                 },
-                Modifier
-                    .fillMaxWidth()
-                    .semantics { role = Role.Button },
-                contentColor = MaterialTheme.colors.onSurface
+                Modifier.fillMaxWidth(),
+                contentColor = MaterialTheme.colors.onSurface,
+                role = Role.Button
             ) {
                 Column(
                     Modifier
