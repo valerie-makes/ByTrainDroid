@@ -50,6 +50,9 @@ fun SheetProvider(content: @Composable () -> Unit) {
     // expanded, and to enable pressing the back button during this period.
     var isExpanding by remember { mutableStateOf(false) }
 
+    // TODO: write explanatory comment here
+    var isCollapsingByTap by remember { mutableStateOf(false) }
+
     val sheetController by remember(sheetState, isExpanding) {
         derivedStateOf {
             object : SheetController {
@@ -67,6 +70,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
                 }
 
                 override fun collapse() {
+                    isCollapsingByTap = true
                     scope.launch { sheetState.collapse() }
                 }
 
@@ -77,6 +81,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
                         enabled = sheetState.direction != 1f &&
                                 (isExpanding || sheetState.isExpanded),
                     ) {
+                        isCollapsingByTap = true
                         scope.launch { sheetState.collapse() }
                     }
                 }
@@ -86,6 +91,8 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
     if (sheetState.isExpanded) {
         isExpanding = false
+    } else {
+        isCollapsingByTap = false
     }
 
     // Free up memory once the sheet is collapsed. Check for both `direction`
@@ -118,8 +125,8 @@ fun SheetProvider(content: @Composable () -> Unit) {
         },
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
-        // Prevent gesture dismissal until fully expanded
-        sheetGesturesEnabled = sheetState.isExpanded,
+        // Prevent gesture dismissal during expansion and collapse
+        sheetGesturesEnabled = sheetState.isExpanded && !isCollapsingByTap,
     ) { innerPadding ->
         Box(
             Modifier
