@@ -50,11 +50,7 @@ fun SheetProvider(content: @Composable () -> Unit) {
     // expanded, and to enable pressing the back button during this period.
     var isExpanding by remember { mutableStateOf(false) }
 
-    // Used to restore the back button as soon as it's been pressed,
-    // rather than having to wait for the sheet to be fully collapsed.
-    var backHandlerEnabled by remember { mutableStateOf(true) }
-
-    val sheetController by remember(sheetState, isExpanding, backHandlerEnabled) {
+    val sheetController by remember(sheetState, isExpanding) {
         derivedStateOf {
             object : SheetController {
                 override fun present(content: SheetContent) {
@@ -71,16 +67,16 @@ fun SheetProvider(content: @Composable () -> Unit) {
                 }
 
                 override fun collapse() {
-                    backHandlerEnabled = false
                     scope.launch { sheetState.collapse() }
                 }
 
                 @Composable
                 override fun BackHandler() {
                     BackHandler(
-                        enabled = backHandlerEnabled && (isExpanding || sheetState.isExpanded),
+                        // when expanding or expanded + the sheet isn't already collapsing
+                        enabled = sheetState.direction != 1f &&
+                                (isExpanding || sheetState.isExpanded),
                     ) {
-                        backHandlerEnabled = false
                         scope.launch { sheetState.collapse() }
                     }
                 }
@@ -90,8 +86,6 @@ fun SheetProvider(content: @Composable () -> Unit) {
 
     if (sheetState.isExpanded) {
         isExpanding = false
-    } else {
-        backHandlerEnabled = true
     }
 
     // Free up memory once the sheet is collapsed. Check for both `direction`
