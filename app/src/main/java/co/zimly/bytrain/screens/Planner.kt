@@ -2,6 +2,8 @@ package co.zimly.bytrain.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -9,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
@@ -23,9 +26,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
-import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.composables.Section
 import co.zimly.bytrain.composables.TitleText
+import co.zimly.bytrain.model.Screen
 
 @ExperimentalAnimationApi
 @Composable
@@ -44,39 +47,51 @@ fun Planner(navController: NavController) {
             TitleText(stringResource(R.string.planner))
         }
 
-        Box(contentAlignment = Alignment.CenterEnd) {
-            OutlinedTextField(
-                value = searchText,
-                onValueChange = { searchText = it },
-                Modifier
-                    .fillMaxWidth()
-                    .onFocusChanged { searchFocused = it.isFocused },
-                label = { Text(stringResource(R.string.search_stations)) },
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    autoCorrect = false,
-                    capitalization = KeyboardCapitalization.Words,
-                    imeAction = ImeAction.Search,
-                ),
-                keyboardActions = KeyboardActions(onSearch = {
-                    if (searchText.isNotEmpty()) {
-                        focusManager.clearFocus()
-                    }
-                }),
-            )
-            if (resultsMode) {
-                TextButton(
-                    onClick = {
-                        searchText = ""
-                        focusManager.clearFocus()
-                    },
-                    Modifier.padding(top = 8.dp, end = 8.dp)
+        OutlinedTextField(
+            value = searchText,
+            onValueChange = { searchText = it },
+            Modifier
+                .fillMaxWidth()
+                .onFocusChanged { searchFocused = it.isFocused },
+            label = { Text(stringResource(R.string.search_stations)) },
+            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+            trailingIcon = {
+                Row(
+                    Modifier.padding(end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(stringResource(R.string.cancel))
+                    if (searchText.isNotEmpty()) {
+                        IconButton(onClick = { searchText = "" }) {
+                            Icon(
+                                Icons.Filled.Clear,
+                                contentDescription = stringResource(R.string.clear),
+                            )
+                        }
+                    }
+                    AnimatedVisibility(visible = resultsMode, enter = fadeIn(), exit = fadeOut()) {
+                        TextButton(
+                            onClick = {
+                                searchText = ""
+                                focusManager.clearFocus()
+                            },
+                        ) {
+                            Text(stringResource(R.string.cancel))
+                        }
+                    }
                 }
-            }
-        }
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                capitalization = KeyboardCapitalization.Words,
+                imeAction = ImeAction.Search,
+            ),
+            keyboardActions = KeyboardActions(onSearch = {
+                if (searchText.isNotEmpty()) {
+                    focusManager.clearFocus()
+                }
+            }),
+        )
 
         Spacer(Modifier.height(16.dp))
         Button(
