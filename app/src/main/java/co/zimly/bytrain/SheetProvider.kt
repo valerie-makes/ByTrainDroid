@@ -100,9 +100,8 @@ fun SheetProvider(content: @Composable () -> Unit) {
         isCollapsingByTap = false
     }
 
-    // Free up memory once the sheet is collapsed. Check for both `direction`
-    // and `isCollapsed` in case of a collapse during initial expansion.
-    if (!isExpanding && sheetState.isCollapsed && sheetState.direction == 0f) {
+    // Free up memory once the sheet is collapsed.
+    if (!isExpanding && sheetState.isCollapsed) {
         SheetContentWrapper.value = {}
     }
 
