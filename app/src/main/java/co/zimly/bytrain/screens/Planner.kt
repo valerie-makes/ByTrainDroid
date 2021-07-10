@@ -157,17 +157,16 @@ private fun SearchResults(searchText: String) {
                 shape = RectangleShape,
                 colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.onSurface),
                 contentPadding = PaddingValues(
-                    start = 16.dp,
-                    top = ButtonDefaults.ContentPadding.calculateTopPadding(),
-                    end = 16.dp,
-                    bottom = ButtonDefaults.ContentPadding.calculateBottomPadding(),
+                    start = 16.dp, top = 10.dp,
+                    end = 16.dp, bottom = 10.dp,
                 ),
             ) {
                 Icon(Icons.Filled.Train, contentDescription = null)
-                Spacer(Modifier.width(12.dp))
+                Spacer(Modifier.width(14.dp))
                 Text(station.name, fontSize = 18.sp)
                 Spacer(Modifier.fillMaxWidth())
             }
+            Divider(startIndent = 54.dp)
         }
     }
 }
