@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import co.zimly.bytrain.LocalSheetController
 import co.zimly.bytrain.R
-import co.zimly.bytrain.composables.Section
+import co.zimly.bytrain.composables.SectionHeader
 import co.zimly.bytrain.composables.TitleText
 import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.sheets.ByTrainPro
@@ -69,97 +69,95 @@ private fun MainContent(navController: NavController) {
 
     TitleText(stringResource(R.string.journeys))
 
-    Section(stringResource(R.string.upcoming)) {
-        Card(Modifier.fillMaxWidth(), contentColor = MaterialTheme.colors.onSurface) {
-            Column(
-                Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Icon(Icons.Filled.Map, contentDescription = null)
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    stringResource(R.string.no_journeys),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                )
-                Text(
-                    stringResource(R.string.planner_cta),
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(Modifier.height(12.dp))
-                Button(
-                    onClick = {
-                        navController.navigate(Screen.Planner.route) {
-                            popUpTo(Screen.Journeys.route) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+    SectionHeader(stringResource(R.string.upcoming))
+    Card(Modifier.fillMaxWidth(), contentColor = MaterialTheme.colors.onSurface) {
+        Column(
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Icon(Icons.Filled.Map, contentDescription = null)
+            Spacer(Modifier.height(4.dp))
+            Text(
+                stringResource(R.string.no_journeys),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium,
+            )
+            Text(
+                stringResource(R.string.planner_cta),
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(12.dp))
+            Button(
+                onClick = {
+                    navController.navigate(Screen.Planner.route) {
+                        popUpTo(Screen.Journeys.route) {
+                            saveState = true
                         }
-                    },
-                    Modifier.fillMaxWidth()
-                ) {
-                    Icon(Icons.Filled.DateRange, contentDescription = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.start_planning))
-                }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                Modifier.fillMaxWidth()
+            ) {
+                Icon(Icons.Filled.DateRange, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.start_planning))
             }
         }
     }
 
     Spacer(Modifier.height(8.dp))
 
-    Section(title = stringResource(R.string.featured)) {
-        Card(
-            onClick = {
-                sheetController.present { ByTrainPro() }
-            },
-            Modifier.fillMaxWidth(),
-            contentColor = MaterialTheme.colors.onSurface,
-            role = Role.Button
+    SectionHeader(stringResource(R.string.featured))
+    Card(
+        onClick = {
+            sheetController.present { ByTrainPro() }
+        },
+        Modifier.fillMaxWidth(),
+        contentColor = MaterialTheme.colors.onSurface,
+        role = Role.Button
+    ) {
+        Column(
+            Modifier
+                .padding(24.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
-                Modifier
-                    .padding(24.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
+            val byTrainPro = stringResource(R.string.bytrain_pro)
+            Row(
+                Modifier.semantics { contentDescription = byTrainPro },
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                val byTrainPro = stringResource(R.string.bytrain_pro)
-                Row(
-                    Modifier.semantics { contentDescription = byTrainPro },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painterResource(R.drawable.icon),
-                        contentDescription = null,
-                        Modifier.size(28.dp),
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(
-                        stringResource(R.string.app_name),
-                        color = MaterialTheme.colors.onBackground,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    Text(
-                        stringResource(R.string.pro_caps),
-                        Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colors.primary)
-                            .padding(horizontal = 6.dp, vertical = 1.dp),
-                        color = MaterialTheme.colors.onPrimary,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-                Spacer(Modifier.height(8.dp))
+                Image(
+                    painterResource(R.drawable.icon),
+                    contentDescription = null,
+                    Modifier.size(28.dp),
+                )
+                Spacer(Modifier.width(8.dp))
                 Text(
-                    stringResource(R.string.pro_cta),
-                    textAlign = TextAlign.Center,
+                    stringResource(R.string.app_name),
+                    color = MaterialTheme.colors.onBackground,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    stringResource(R.string.pro_caps),
+                    Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colors.primary)
+                        .padding(horizontal = 6.dp, vertical = 1.dp),
+                    color = MaterialTheme.colors.onPrimary,
+                    fontWeight = FontWeight.Bold,
                 )
             }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                stringResource(R.string.pro_cta),
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }
