@@ -26,6 +26,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -160,10 +163,24 @@ private fun SearchResults(searchText: String) {
         }
 
         itemsIndexed(matchedStations) { index, station ->
+            val stationString = buildAnnotatedString {
+                append(station.name)
+
+                val matchIndex = station.name.indexOf(searchText, ignoreCase = true)
+                addStyle(
+                    SpanStyle(
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colors.onBackground
+                    ),
+                    start = matchIndex,
+                    end = matchIndex + searchText.length,
+                )
+            }
+
             FormButton(onClick = { /*TODO*/ }) {
                 Icon(Icons.Filled.Train, contentDescription = null)
                 Spacer(Modifier.width(16.dp))
-                Text(station.name, fontSize = 18.sp)
+                Text(stationString, fontSize = 18.sp)
                 Spacer(Modifier.weight(1f))
             }
 
