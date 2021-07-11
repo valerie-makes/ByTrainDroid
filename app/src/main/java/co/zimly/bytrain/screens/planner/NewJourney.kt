@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SwapCalls
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -90,6 +92,14 @@ fun NewJourney(navController: NavController) {
                             "15 May at 12:00",
                             fontWeight = FontWeight.Normal,
                             fontSize = 18.sp,
+                        )
+                        Spacer(Modifier.width(12.dp))
+                        Icon(
+                            Icons.Filled.ArrowForwardIos,
+                            contentDescription = null,
+                            Modifier
+                                .size(16.dp)
+                                .alpha(ContentAlpha.medium),
                         )
                     }
                 }
