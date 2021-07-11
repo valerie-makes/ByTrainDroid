@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
+import co.zimly.bytrain.composables.FormButton
 import co.zimly.bytrain.composables.SectionHeader
 import co.zimly.bytrain.composables.TitleText
 import co.zimly.bytrain.model.Screen
@@ -160,20 +160,11 @@ private fun SearchResults(searchText: String) {
         }
 
         itemsIndexed(matchedStations) { index, station ->
-            TextButton(
-                onClick = { /*TODO*/ },
-                Modifier.fillMaxWidth(),
-                shape = RectangleShape,
-                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.onSurface),
-                contentPadding = PaddingValues(
-                    start = 16.dp, top = 10.dp,
-                    end = 16.dp, bottom = 10.dp,
-                ),
-            ) {
+            FormButton(onClick = { /*TODO*/ }) {
                 Icon(Icons.Filled.Train, contentDescription = null)
                 Spacer(Modifier.width(16.dp))
                 Text(station.name, fontSize = 18.sp)
-                Spacer(Modifier.fillMaxWidth())
+                Spacer(Modifier.weight(1f))
             }
 
             if (index != matchedStations.size - 1) {

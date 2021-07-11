@@ -22,4 +22,10 @@
     <string name="about">About</string>
     <string name="done">Done</string>
     <string name="search_results">Search Results</string>
+    <string name="from">from:</string>
+    <string name="to">to:</string>
+    <string name="departure_station">Departure Station</string>
+    <string name="destination_station">Destination Station</string>
+    <string name="outbound">Outbound</string>
+    <string name="find_trains">Find Trains</string>
 </resources>

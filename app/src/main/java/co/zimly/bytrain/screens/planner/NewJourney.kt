@@ -1,27 +1,88 @@
 package co.zimly.bytrain.screens.planner
 
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
+import co.zimly.bytrain.composables.FormButton
+import co.zimly.bytrain.composables.FormRow
 
 @Composable
 fun NewJourney(navController: NavController) {
-    TopAppBar(
-        title = { Text(stringResource(R.string.new_journey)) },
-        navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
+    Column {
+        TopAppBar(
+            title = { Text(stringResource(R.string.new_journey)) },
+            navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
+                }
+            },
+            actions = {
+                IconButton(onClick = {}) {
+                    Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.find))
+                }
+            },
+        )
+        Column(Modifier.padding(16.dp)) {
+            Card {
+                Column {
+                    FormButton(onClick = { /*TODO*/ }) {
+                        Text(stringResource(R.string.from))
+                        Spacer(Modifier.width(12.dp))
+                        Text(stringResource(R.string.departure_station), fontSize = 18.sp)
+                        Spacer(Modifier.weight(1f))
+                    }
+                    Divider()
+                    FormButton(onClick = { /*TODO*/ }) {
+                        Text(stringResource(R.string.to))
+                        Spacer(Modifier.width(12.dp))
+                        Text(stringResource(R.string.destination_station), fontSize = 18.sp)
+                        Spacer(Modifier.weight(1f))
+                    }
+                }
             }
-        },
-        actions = {
-            IconButton(onClick = {}) {
-                Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.find))
+            Spacer(Modifier.height(32.dp))
+            Card {
+                Column {
+                    FormRow {
+                        // TODO: implement switch
+                        Text("One-Way or Return", fontSize = 18.sp)
+                    }
+                    Divider()
+                    FormButton(onClick = { /*TODO*/ }) {
+                        Text(
+                            stringResource(R.string.outbound),
+                            color = MaterialTheme.colors.onBackground,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 18.sp,
+                        )
+                        Spacer(Modifier.weight(1f))
+                        Text(
+                            "15 May at 12:00",
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 18.sp,
+                        )
+                    }
+                }
             }
-        },
-    )
+            Spacer(Modifier.height(32.dp))
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier.fillMaxWidth()
+            ) {
+                Icon(Icons.Filled.Search, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.find_trains))
+            }
+        }
+    }
 }
