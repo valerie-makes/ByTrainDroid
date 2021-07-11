@@ -1,6 +1,8 @@
 package co.zimly.bytrain.screens.planner
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -36,7 +38,11 @@ fun NewJourney(navController: NavController) {
                 }
             },
         )
-        Column(Modifier.padding(16.dp)) {
+        Column(
+            Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+        ) {
             Card {
                 Box(contentAlignment = Alignment.CenterEnd) {
                     Column {
