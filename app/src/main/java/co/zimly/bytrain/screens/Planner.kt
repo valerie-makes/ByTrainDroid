@@ -171,13 +171,13 @@ private fun SearchResults(searchText: String) {
                 ),
             ) {
                 Icon(Icons.Filled.Train, contentDescription = null)
-                Spacer(Modifier.width(14.dp))
+                Spacer(Modifier.width(16.dp))
                 Text(station.name, fontSize = 18.sp)
                 Spacer(Modifier.fillMaxWidth())
             }
 
             if (index != matchedStations.size - 1) {
-                Divider(startIndent = 54.dp)
+                Divider(startIndent = 16.dp + 24.dp + 16.dp)
             }
         }
 
