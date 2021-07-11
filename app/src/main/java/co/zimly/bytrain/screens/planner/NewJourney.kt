@@ -5,7 +5,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SwapCalls
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,19 +36,37 @@ fun NewJourney(navController: NavController) {
         )
         Column(Modifier.padding(16.dp)) {
             Card {
-                Column {
-                    FormButton(onClick = { /*TODO*/ }) {
-                        Text(stringResource(R.string.from))
-                        Spacer(Modifier.width(12.dp))
-                        Text(stringResource(R.string.departure_station), fontSize = 18.sp)
-                        Spacer(Modifier.weight(1f))
+                Box(contentAlignment = Alignment.CenterEnd) {
+                    Column {
+                        FormButton(onClick = { /*TODO*/ }) {
+                            Text(stringResource(R.string.from))
+                            Spacer(Modifier.width(12.dp))
+                            Text(stringResource(R.string.departure_station), fontSize = 18.sp)
+                            Spacer(Modifier.weight(1f))
+                        }
+                        Divider()
+                        FormButton(onClick = { /*TODO*/ }) {
+                            Text(stringResource(R.string.to))
+                            Spacer(Modifier.width(12.dp))
+                            Text(stringResource(R.string.destination_station), fontSize = 18.sp)
+                            Spacer(Modifier.weight(1f))
+                        }
                     }
-                    Divider()
-                    FormButton(onClick = { /*TODO*/ }) {
-                        Text(stringResource(R.string.to))
-                        Spacer(Modifier.width(12.dp))
-                        Text(stringResource(R.string.destination_station), fontSize = 18.sp)
-                        Spacer(Modifier.weight(1f))
+                    Button(
+                        onClick = { /*TODO*/ },
+                        Modifier
+                            .padding(end = 16.dp)
+                            .size(40.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = MaterialTheme.colors.background,
+                            contentColor = MaterialTheme.colors.primary,
+                        ),
+                    ) {
+                        Icon(
+                            Icons.Filled.SwapCalls,
+                            contentDescription = stringResource(R.string.swap_stations)
+                        )
                     }
                 }
             }

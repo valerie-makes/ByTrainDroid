@@ -28,4 +28,5 @@
     <string name="destination_station">Destination Station</string>
     <string name="outbound">Outbound</string>
     <string name="find_trains">Find Trains</string>
+    <string name="swap_stations">Swap Stations</string>
 </resources>
