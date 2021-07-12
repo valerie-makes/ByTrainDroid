@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -112,7 +111,6 @@ fun NewJourney(navController: NavController) {
                     )
                     Divider(startIndent = 16.dp + 24.dp + 16.dp)
                     FormRow(
-                        Modifier.semantics(mergeDescendants = true) {},
                         icon = { Icon(Icons.Filled.Train, contentDescription = null) },
                         primaryText = stringResource(R.string.direct_trains_only),
                     ) {

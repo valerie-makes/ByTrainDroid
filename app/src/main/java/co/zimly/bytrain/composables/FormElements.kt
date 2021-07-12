@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,13 +52,13 @@ fun FormButton(
 
 @Composable
 fun FormRow(
-    modifier: Modifier = Modifier,
     icon: @Composable (() -> Unit)? = null,
     primaryText: String? = null,
     content: @Composable RowScope.() -> Unit,
 ) {
     Row(
-        modifier
+        Modifier
+            .semantics(mergeDescendants = true) {}
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
