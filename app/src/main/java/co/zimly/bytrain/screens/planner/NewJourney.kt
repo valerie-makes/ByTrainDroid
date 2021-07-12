@@ -19,6 +19,7 @@ import androidx.navigation.NavController
 import co.zimly.bytrain.R
 import co.zimly.bytrain.composables.FormButton
 import co.zimly.bytrain.composables.FormRow
+import co.zimly.bytrain.composables.FormSectionHeader
 
 @Composable
 fun NewJourney(navController: NavController) {
@@ -103,6 +104,7 @@ fun NewJourney(navController: NavController) {
             }
 
             Spacer(Modifier.height(32.dp))
+            FormSectionHeader(stringResource(R.string.options))
             Card {
                 Column {
                     FormButton(
