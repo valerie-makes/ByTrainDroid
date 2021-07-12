@@ -52,12 +52,13 @@ fun FormButton(
 
 @Composable
 fun FormRow(
+    modifier: Modifier = Modifier,
     icon: @Composable (() -> Unit)? = null,
     primaryText: String? = null,
     content: @Composable RowScope.() -> Unit,
 ) {
     Row(
-        Modifier
+        modifier
             .semantics(mergeDescendants = true) {}
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 10.dp)
