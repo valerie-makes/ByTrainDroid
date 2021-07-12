@@ -177,9 +177,10 @@ private fun SearchResults(searchText: String) {
                 )
             }
 
-            FormButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Filled.Train, contentDescription = null)
-                Spacer(Modifier.width(16.dp))
+            FormButton(
+                onClick = { /*TODO*/ },
+                icon = { Icon(Icons.Filled.Train, contentDescription = null) },
+            ) {
                 Text(stationString, fontSize = 18.sp)
                 Spacer(Modifier.weight(1f))
             }

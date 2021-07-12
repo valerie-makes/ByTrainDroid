@@ -29,4 +29,6 @@
     <string name="outbound">Outbound</string>
     <string name="find_trains">Find Trains</string>
     <string name="swap_stations">Swap Stations</string>
+    <string name="via_avoid">Via / Avoid</string>
+    <string name="direct_trains_only">Direct Trains Only</string>
 </resources>

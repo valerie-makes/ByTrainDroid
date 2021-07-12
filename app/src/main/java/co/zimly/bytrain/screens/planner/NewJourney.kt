@@ -5,15 +5,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SwapCalls
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,6 +21,8 @@ import co.zimly.bytrain.composables.FormRow
 
 @Composable
 fun NewJourney(navController: NavController) {
+    var directTrainsOnly by remember { mutableStateOf(false) }
+
     Column {
         TopAppBar(
             title = { Text(stringResource(R.string.new_journey)) },
@@ -78,6 +77,7 @@ fun NewJourney(navController: NavController) {
                     }
                 }
             }
+
             Spacer(Modifier.height(32.dp))
             Card {
                 Column {
@@ -86,30 +86,45 @@ fun NewJourney(navController: NavController) {
                         Text("One-Way or Return", fontSize = 18.sp)
                     }
                     Divider()
-                    FormButton(onClick = { /*TODO*/ }) {
-                        Text(
-                            stringResource(R.string.outbound),
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 18.sp,
-                        )
+                    FormButton(
+                        onClick = { /*TODO*/ },
+                        primaryText = stringResource(R.string.outbound),
+                        withArrow = true,
+                    ) {
                         Spacer(Modifier.weight(1f))
                         Text(
                             "15 May at 12:00",
                             fontWeight = FontWeight.Normal,
                             fontSize = 18.sp,
                         )
-                        Spacer(Modifier.width(12.dp))
-                        Icon(
-                            Icons.Filled.ArrowForwardIos,
-                            contentDescription = null,
-                            Modifier
-                                .size(16.dp)
-                                .alpha(ContentAlpha.medium),
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(32.dp))
+            Card {
+                Column {
+                    FormButton(
+                        onClick = { /*TODO*/ },
+                        icon = { Icon(Icons.Filled.AltRoute, contentDescription = null) },
+                        primaryText = stringResource(R.string.via_avoid),
+                        withArrow = true,
+                    )
+                    Divider(startIndent = 16.dp + 24.dp + 16.dp)
+                    FormRow(
+                        Modifier.semantics(mergeDescendants = true) {},
+                        icon = { Icon(Icons.Filled.Train, contentDescription = null) },
+                        primaryText = stringResource(R.string.direct_trains_only),
+                    ) {
+                        Spacer(Modifier.weight(1f))
+                        Switch(
+                            checked = directTrainsOnly,
+                            onCheckedChange = { directTrainsOnly = it }
                         )
                     }
                 }
             }
+
             Spacer(Modifier.height(32.dp))
             Button(
                 onClick = { /*TODO*/ },
