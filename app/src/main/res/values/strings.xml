@@ -32,4 +32,9 @@
     <string name="via_avoid">Via / Avoid</string>
     <string name="direct_trains_only">Direct Trains Only</string>
     <string name="options">Options</string>
+    <string name="ok">OK</string>
+    <string name="no_departure_station">No Departure Station</string>
+    <string name="no_destination_station">No Destination Station</string>
+    <string name="please_select_departure">Please select your departure station.</string>
+    <string name="please_select_destination">Please select your destination station.</string>
 </resources>

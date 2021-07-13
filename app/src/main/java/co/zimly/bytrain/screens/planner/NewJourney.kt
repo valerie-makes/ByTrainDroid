@@ -7,7 +7,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,6 +19,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
 import co.zimly.bytrain.composables.FormButton
@@ -23,7 +28,23 @@ import co.zimly.bytrain.composables.FormSectionHeader
 
 @Composable
 fun NewJourney(navController: NavController) {
-    var directTrainsOnly by remember { mutableStateOf(false) }
+    var directTrainsOnly by rememberSaveable { mutableStateOf(false) }
+    var showingAlert by rememberSaveable { mutableStateOf(false) }
+
+    if (showingAlert) {
+        AlertDialog(
+            onDismissRequest = { showingAlert = false },
+            confirmButton = {
+                TextButton(onClick = { showingAlert = false }) {
+                    Text(stringResource(R.string.ok))
+                }
+            },
+            Modifier.padding(32.dp),
+            title = { Text(stringResource(R.string.no_destination_station)) },
+            text = { Text(stringResource(R.string.please_select_destination)) },
+            contentColor = MaterialTheme.colors.onBackground,
+        )
+    }
 
     Column {
         TopAppBar(
@@ -34,7 +55,10 @@ fun NewJourney(navController: NavController) {
                 }
             },
             actions = {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    // TODO: handle main action
+                    showingAlert = true
+                }) {
                     Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.find))
                 }
             },
@@ -134,7 +158,10 @@ fun NewJourney(navController: NavController) {
 
             Spacer(Modifier.height(32.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    // TODO: handle main action
+                    showingAlert = true
+                },
                 Modifier.fillMaxWidth()
             ) {
                 Icon(Icons.Filled.Search, contentDescription = null)

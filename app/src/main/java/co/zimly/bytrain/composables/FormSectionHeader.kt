@@ -18,7 +18,7 @@ fun FormSectionHeader(text: String) {
     Text(
         text.uppercase(),
         Modifier
-            .padding(start = 16.dp, bottom = 8.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
             .semantics {
                 heading()
                 contentDescription = text
