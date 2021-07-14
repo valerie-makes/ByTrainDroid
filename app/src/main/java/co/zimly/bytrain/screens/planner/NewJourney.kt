@@ -1,5 +1,7 @@
 package co.zimly.bytrain.screens.planner
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
@@ -26,6 +28,7 @@ import co.zimly.bytrain.composables.FormButton
 import co.zimly.bytrain.composables.FormRow
 import co.zimly.bytrain.composables.FormSectionHeader
 
+@ExperimentalAnimationApi
 @Composable
 fun NewJourney(navController: NavController) {
     var returnJourney by rememberSaveable { mutableStateOf(false) }
@@ -132,6 +135,23 @@ fun NewJourney(navController: NavController) {
                             fontWeight = FontWeight.Normal,
                             fontSize = 18.sp,
                         )
+                    }
+                    AnimatedVisibility(visible = returnJourney) {
+                        Column {
+                            Divider()
+                            FormButton(
+                                onClick = { /*TODO*/ },
+                                primaryText = stringResource(R.string.return_),
+                                withArrow = true,
+                            ) {
+                                Spacer(Modifier.weight(1f))
+                                Text(
+                                    "15 May at 15:00",
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 18.sp,
+                                )
+                            }
+                        }
                     }
                 }
             }
