@@ -43,7 +43,6 @@ fun NewJourney(navController: NavController) {
                     Text(stringResource(R.string.ok))
                 }
             },
-            Modifier.padding(32.dp),
             title = { Text(stringResource(R.string.no_destination_station)) },
             text = { Text(stringResource(R.string.please_select_destination)) },
             contentColor = MaterialTheme.colors.onBackground,
