@@ -28,33 +28,31 @@ fun ButtonGroup(
     val endButtonShape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp)
 
     val colors = buttons.indices.map {
-        val backgroundColor = animateColorAsState(
-            if (it == selection) {
-                // Based on `ButtonDefaults.buttonColors()`
-                MaterialTheme.colors.primary
-            } else {
-                // Based on `ButtonDefaults.outlinedButtonColors()`
-                MaterialTheme.colors.surface
-            }
-        )
-        val contentColor = animateColorAsState(
-            if (it == selection) {
-                // Based on `ButtonDefaults.buttonColors()`
-                MaterialTheme.colors.onPrimary
-            } else {
-                // Based on `ButtonDefaults.outlinedButtonColors()`
-                MaterialTheme.colors.primary
-            }
-        )
         object : ButtonColors {
             @Composable
             override fun backgroundColor(enabled: Boolean): State<Color> {
-                return backgroundColor
+                return animateColorAsState(
+                    if (it == selection) {
+                        // Based on `ButtonDefaults.buttonColors()`
+                        MaterialTheme.colors.primary
+                    } else {
+                        // Based on `ButtonDefaults.outlinedButtonColors()`
+                        MaterialTheme.colors.surface
+                    }
+                )
             }
 
             @Composable
             override fun contentColor(enabled: Boolean): State<Color> {
-                return contentColor
+                return animateColorAsState(
+                    if (it == selection) {
+                        // Based on `ButtonDefaults.buttonColors()`
+                        MaterialTheme.colors.onPrimary
+                    } else {
+                        // Based on `ButtonDefaults.outlinedButtonColors()`
+                        MaterialTheme.colors.primary
+                    }
+                )
             }
         }
     }
