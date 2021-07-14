@@ -3,7 +3,6 @@ package co.zimly.bytrain.screens.planner
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,13 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
+import co.zimly.bytrain.composables.ButtonGroup
 import co.zimly.bytrain.composables.FormButton
 import co.zimly.bytrain.composables.FormRow
 import co.zimly.bytrain.composables.FormSectionHeader
@@ -111,36 +109,16 @@ fun NewJourney(navController: NavController) {
             Card {
                 Column {
                     FormRow {
-                        OutlinedButton(
-                            onClick = { returnJourney = false },
-                            Modifier
-                                .weight(1f)
-                                .semantics { selected = !returnJourney },
-                            shape = RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
-                            colors = if (returnJourney) {
-                                ButtonDefaults.outlinedButtonColors()
-                            } else {
-                                ButtonDefaults.buttonColors()
+                        ButtonGroup(
+                            selection = if (returnJourney) 1 else 0,
+                            onSelectionChanged = { selection ->
+                                returnJourney = (selection == 1)
                             },
-                        ) {
-                            Text(stringResource(R.string.one_way))
-                        }
-                        OutlinedButton(
-                            onClick = { returnJourney = true },
-                            Modifier
-                                .weight(1f)
-                                .semantics { selected = returnJourney },
-                            shape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
-                            colors = if (returnJourney) {
-                                ButtonDefaults.buttonColors()
-                            } else {
-                                ButtonDefaults.outlinedButtonColors()
-                            },
-                        ) {
-                            Text(stringResource(R.string.return_))
-                        }
+                            buttons = listOf(
+                                { Text(stringResource(R.string.one_way)) },
+                                { Text(stringResource(R.string.return_)) },
+                            ),
+                        )
                     }
                     Divider()
                     FormButton(
