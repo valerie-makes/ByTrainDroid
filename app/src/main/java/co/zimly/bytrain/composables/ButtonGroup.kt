@@ -27,7 +27,7 @@ fun ButtonGroup(
     val startButtonShape = RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp)
     val endButtonShape = RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp)
 
-    val colors = buttons.indices.map {
+    val colors: List<ButtonColors> = buttons.indices.map {
         object : ButtonColors {
             @Composable
             override fun backgroundColor(enabled: Boolean): State<Color> {
