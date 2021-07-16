@@ -10,9 +10,7 @@ import androidx.compose.material.ButtonColors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -30,35 +28,31 @@ fun ButtonGroup(
     val colors: List<ButtonColors> = buttons.indices.map {
         object : ButtonColors {
             @Composable
-            override fun backgroundColor(enabled: Boolean): State<Color> {
-                return animateColorAsState(
-                    if (it == selection) {
-                        // Based on `ButtonDefaults.buttonColors()`
-                        MaterialTheme.colors.primary
-                    } else {
-                        // Based on `ButtonDefaults.outlinedButtonColors()`
-                        MaterialTheme.colors.surface
-                    }
-                )
-            }
+            override fun backgroundColor(enabled: Boolean) = animateColorAsState(
+                if (it == selection) {
+                    // Based on `ButtonDefaults.buttonColors()`
+                    MaterialTheme.colors.primary
+                } else {
+                    // Based on `ButtonDefaults.outlinedButtonColors()`
+                    MaterialTheme.colors.surface
+                }
+            )
 
             @Composable
-            override fun contentColor(enabled: Boolean): State<Color> {
-                return animateColorAsState(
-                    if (it == selection) {
-                        // Based on `ButtonDefaults.buttonColors()`
-                        MaterialTheme.colors.onPrimary
-                    } else {
-                        // Based on `ButtonDefaults.outlinedButtonColors()`
-                        MaterialTheme.colors.primary
-                    }
-                )
-            }
+            override fun contentColor(enabled: Boolean) = animateColorAsState(
+                if (it == selection) {
+                    // Based on `ButtonDefaults.buttonColors()`
+                    MaterialTheme.colors.onPrimary
+                } else {
+                    // Based on `ButtonDefaults.outlinedButtonColors()`
+                    MaterialTheme.colors.primary
+                }
+            )
         }
     }
 
     Row(Modifier.selectableGroup()) {
-        buttons.withIndex().forEach { (index, content) ->
+        buttons.forEachIndexed { index, content ->
             OutlinedButton(
                 onClick = { onSelectionChanged(index) },
                 Modifier
