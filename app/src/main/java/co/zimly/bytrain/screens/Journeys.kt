@@ -108,7 +108,7 @@ private fun MainContent(navController: NavController) {
         }
     }
 
-    Spacer(Modifier.height(8.dp))
+    Spacer(Modifier.height(12.dp))
 
     SectionHeader(stringResource(R.string.featured))
     Card(

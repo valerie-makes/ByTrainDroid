@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Train
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,12 +37,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
 import co.zimly.bytrain.composables.FormButton
+import co.zimly.bytrain.composables.JourneyCard
 import co.zimly.bytrain.composables.SectionHeader
 import co.zimly.bytrain.composables.TitleText
 import co.zimly.bytrain.model.JourneyViewModel
 import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.model.allStations
+import co.zimly.bytrain.util.observeAsState
 
+@ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
 fun Planner(navController: NavController) {
@@ -55,11 +57,11 @@ fun Planner(navController: NavController) {
 
     Column(
         Modifier
-            .padding(top = 16.dp)
             .then(
                 if (searchText.isEmpty()) Modifier.verticalScroll(rememberScrollState())
                 else Modifier
             )
+            .padding(top = 16.dp)
     ) {
         Column(Modifier.padding(horizontal = 16.dp)) {
             AnimatedVisibility(visible = !resultsMode) {
@@ -131,13 +133,14 @@ fun Planner(navController: NavController) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 private fun MainContent(
     navController: NavController,
     journeyViewModel: JourneyViewModel = viewModel(),
 ) {
-    val favorites by journeyViewModel.favorites.observeAsState(listOf())
-    val recents by journeyViewModel.recents.observeAsState(listOf())
+    val favorites by journeyViewModel.favorites.observeAsState()
+    val recents by journeyViewModel.recents.observeAsState()
 
     Spacer(Modifier.height(16.dp))
     Button(
@@ -153,18 +156,26 @@ private fun MainContent(
 
     Spacer(Modifier.height(8.dp))
 
-    if (favorites.size > 0) {
+    if (favorites.isNotEmpty()) {
         SectionHeader(stringResource(R.string.favorites))
         favorites.forEach {
-            Text("${it.from.name} to ${it.to.name}")
+            JourneyCard(it.from, it.to, Modifier.padding(bottom = 12.dp))
         }
     }
 
-    if (recents.size > 0) {
+    if (recents.isNotEmpty()) {
         SectionHeader(stringResource(R.string.recents))
         recents.forEach {
-            Text("${it.from.name} to ${it.to.name}")
+            JourneyCard(it.from, it.to, Modifier.padding(bottom = 12.dp))
         }
+    }
+
+    if (favorites.isNotEmpty() || recents.isNotEmpty()) {
+        // 12.dp + 4.dp = 16.dp
+        Spacer(Modifier.height(4.dp))
+    } else {
+        // 8.dp + 8.dp = 16.dp
+        Spacer(Modifier.height(8.dp))
     }
 }
 
