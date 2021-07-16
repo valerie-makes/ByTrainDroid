@@ -1,5 +1,6 @@
 package co.zimly.bytrain.model
 
+// TODO: Consider using a HashMap for station data
 data class Station(val code: String, val name: String)
 
 val allStations: List<Station> = listOf(

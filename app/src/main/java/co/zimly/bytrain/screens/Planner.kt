@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Train
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,11 +34,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import co.zimly.bytrain.R
 import co.zimly.bytrain.composables.FormButton
 import co.zimly.bytrain.composables.SectionHeader
 import co.zimly.bytrain.composables.TitleText
+import co.zimly.bytrain.model.JourneyViewModel
 import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.model.allStations
 
@@ -129,7 +132,13 @@ fun Planner(navController: NavController) {
 }
 
 @Composable
-private fun MainContent(navController: NavController) {
+private fun MainContent(
+    navController: NavController,
+    journeyViewModel: JourneyViewModel = viewModel(),
+) {
+    val favorites by journeyViewModel.favorites.observeAsState(listOf())
+    val recents by journeyViewModel.recents.observeAsState(listOf())
+
     Spacer(Modifier.height(16.dp))
     Button(
         onClick = {
@@ -144,7 +153,19 @@ private fun MainContent(navController: NavController) {
 
     Spacer(Modifier.height(8.dp))
 
-    SectionHeader(stringResource(R.string.recents))
+    if (favorites.size > 0) {
+        SectionHeader(stringResource(R.string.favorites))
+        favorites.forEach {
+            Text("${it.from.name} to ${it.to.name}")
+        }
+    }
+
+    if (recents.size > 0) {
+        SectionHeader(stringResource(R.string.recents))
+        recents.forEach {
+            Text("${it.from.name} to ${it.to.name}")
+        }
+    }
 }
 
 @Composable
