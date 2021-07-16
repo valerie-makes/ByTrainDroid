@@ -44,6 +44,7 @@ import co.zimly.bytrain.model.JourneyViewModel
 import co.zimly.bytrain.model.Screen
 import co.zimly.bytrain.model.allStations
 import co.zimly.bytrain.util.observeAsState
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -51,17 +52,20 @@ import co.zimly.bytrain.util.observeAsState
 fun Planner(navController: NavController) {
     var searchText by rememberSaveable { mutableStateOf("") }
     var searchFocused by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
     val resultsMode = searchFocused || searchText.isNotEmpty()
 
+    val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
     Column(
-        Modifier
-            .then(
-                if (searchText.isEmpty()) Modifier.verticalScroll(rememberScrollState())
-                else Modifier
-            )
-            .padding(top = 16.dp)
+        if (searchText.isEmpty()) {
+            Modifier.verticalScroll(scrollState, enabled = !searchFocused)
+        } else {
+            Modifier
+        }.padding(top = 16.dp)
     ) {
         Column(Modifier.padding(horizontal = 16.dp)) {
             AnimatedVisibility(visible = !resultsMode) {
@@ -74,7 +78,12 @@ fun Planner(navController: NavController) {
                 Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
-                    .onFocusChanged { searchFocused = it.isFocused },
+                    .onFocusChanged {
+                        searchFocused = it.isFocused
+                        if (searchFocused) scope.launch {
+                            scrollState.animateScrollTo(0)
+                        }
+                    },
                 label = { Text(stringResource(R.string.search_stations)) },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                 trailingIcon = {
