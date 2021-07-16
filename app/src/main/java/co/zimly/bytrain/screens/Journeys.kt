@@ -144,7 +144,7 @@ private fun MainContent(navController: NavController) {
                 )
                 Spacer(Modifier.width(4.dp))
                 Text(
-                    stringResource(R.string.pro_caps),
+                    stringResource(R.string.pro_badge),
                     Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .background(MaterialTheme.colors.primary)
