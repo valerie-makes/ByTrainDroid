@@ -17,6 +17,10 @@ class JourneyViewModel : ViewModel() {
                 Station("RDG", "Reading"),
                 Station("WKM", "Wokingham"),
             ),
+            Journey(
+                Station("WKM", "Wokingham"),
+                Station("WAT", "London Waterloo"),
+            ),
         )
     )
     val favorites: LiveData<List<Journey>> = _favorites
