@@ -74,7 +74,7 @@ fun Planner(navController: NavController) {
             Modifier.verticalScroll(scrollState)
         } else {
             Modifier
-        }.padding(top = 16.dp)
+        }.padding(top = 20.dp)
     ) {
         Column(Modifier.padding(horizontal = 16.dp)) {
             AnimatedVisibility(visible = searchText.isEmpty()) {
@@ -204,11 +204,11 @@ private fun MainContent(
     }
 
     if (favorites.isNotEmpty() || recents.isNotEmpty()) {
-        // 12.dp + 4.dp = 16.dp
-        Spacer(Modifier.height(4.dp))
-    } else {
-        // 8.dp + 8.dp = 16.dp
+        // 12.dp + 8.dp = 20.dp
         Spacer(Modifier.height(8.dp))
+    } else {
+        // 8.dp + 12.dp = 20.dp
+        Spacer(Modifier.height(12.dp))
     }
 }
 

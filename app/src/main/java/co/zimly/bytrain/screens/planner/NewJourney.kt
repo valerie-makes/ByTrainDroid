@@ -69,20 +69,20 @@ fun NewJourney(navController: NavController) {
         Column(
             Modifier
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = 20.dp)
         ) {
             Card {
                 Box(contentAlignment = Alignment.CenterEnd) {
                     Column {
                         FormButton(onClick = { /*TODO*/ }) {
-                            Text(stringResource(R.string.from))
+                            Text(stringResource(R.string.from_colon))
                             Spacer(Modifier.width(12.dp))
                             Text(stringResource(R.string.departure_station), fontSize = 18.sp)
                             Spacer(Modifier.weight(1f))
                         }
                         Divider()
                         FormButton(onClick = { /*TODO*/ }) {
-                            Text(stringResource(R.string.to))
+                            Text(stringResource(R.string.to_colon))
                             Spacer(Modifier.width(12.dp))
                             Text(stringResource(R.string.destination_station), fontSize = 18.sp)
                             Spacer(Modifier.weight(1f))

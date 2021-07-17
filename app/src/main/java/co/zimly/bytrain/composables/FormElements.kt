@@ -38,14 +38,7 @@ fun FormButton(
         }
 
         if (withArrow) {
-            Spacer(Modifier.width(12.dp))
-            Icon(
-                Icons.Filled.ArrowForwardIos,
-                contentDescription = null,
-                Modifier
-                    .size(16.dp)
-                    .alpha(ContentAlpha.medium),
-            )
+            NavigationHint()
         }
     }
 }

@@ -19,7 +19,7 @@ fun TitleText(text: String) {
         text,
         Modifier
             .semantics { heading() }
-            .padding(top = 24.dp),
+            .padding(top = 20.dp),
         style = TextStyle(
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,

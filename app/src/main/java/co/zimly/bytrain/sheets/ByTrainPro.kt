@@ -16,7 +16,7 @@ fun ByTrainPro() {
     Column(
         Modifier
             .verticalScroll(rememberScrollState())
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 20.dp)
     ) {
         TitleText(stringResource(R.string.bytrain_pro))
     }
