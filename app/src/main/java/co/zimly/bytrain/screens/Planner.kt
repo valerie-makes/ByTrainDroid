@@ -64,8 +64,8 @@ fun Planner(navController: NavController) {
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
-    // While scrolling down, immediately hide keyboard
-    if (searchFocused && scrollState.value > 0) {
+    // While scrolling, hide the keyboard
+    if (searchFocused && scrollState.isScrollInProgress) {
         focusManager.clearFocus()
     }
 
@@ -217,7 +217,7 @@ private fun SearchResults(searchText: String) {
     val listState = rememberLazyListState()
     val focusManager = LocalFocusManager.current
 
-    // While scrolling, immediately hide keyboard
+    // While scrolling, hide the keyboard
     if (listState.isScrollInProgress) {
         focusManager.clearFocus()
     }
