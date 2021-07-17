@@ -9,13 +9,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import co.zimly.bytrain.model.Station
 
 @ExperimentalMaterialApi
 @Composable
 fun JourneyCard(from: Station, to: Station, modifier: Modifier = Modifier) {
-    Card(onClick = {}, modifier.fillMaxWidth()) {
+    Card(onClick = {}, modifier.fillMaxWidth(), role = Role.Button) {
         Row(Modifier.padding(16.dp)) {
             Column {
                 Text(from.name)
