@@ -187,7 +187,7 @@ private fun MainContent(
         Text(stringResource(R.string.new_journey))
     }
 
-    Spacer(Modifier.height(8.dp))
+    Spacer(Modifier.height(12.dp))
 
     if (favorites.isNotEmpty()) {
         SectionHeader(stringResource(R.string.favorites))
@@ -203,13 +203,8 @@ private fun MainContent(
         }
     }
 
-    if (favorites.isNotEmpty() || recents.isNotEmpty()) {
-        // 12.dp + 8.dp = 20.dp
-        Spacer(Modifier.height(8.dp))
-    } else {
-        // 8.dp + 12.dp = 20.dp
-        Spacer(Modifier.height(12.dp))
-    }
+    // 12.dp + 8.dp = 20.dp
+    Spacer(Modifier.height(8.dp))
 }
 
 @Composable

@@ -9,7 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import co.zimly.bytrain.R
 import co.zimly.bytrain.model.Station
 
@@ -18,7 +20,7 @@ import co.zimly.bytrain.model.Station
 fun JourneyCard(from: Station, to: Station, modifier: Modifier = Modifier) {
     Card(onClick = {}, modifier.fillMaxWidth(), role = Role.Button) {
         Row(
-            Modifier.padding(top = 16.dp, end = 16.dp, bottom = 16.dp),
+            Modifier.padding(top = 8.dp, bottom = 8.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = { /*TODO*/ }) {
@@ -28,14 +30,24 @@ fun JourneyCard(from: Station, to: Station, modifier: Modifier = Modifier) {
                 )
             }
             Column {
-                Text(from.name)
+                StationText(from.name)
                 Row {
-                    Text(stringResource(R.string.to) + " ")
-                    Text(to.name)
+                    Text(
+                        stringResource(R.string.to) + " ",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium,
+                    )
+                    StationText(to.name)
                 }
             }
             Spacer(Modifier.weight(1f))
             NavigationHint()
         }
     }
+}
+
+// TODO: extract for use elsewhere in the app
+@Composable
+private fun StationText(name: String) {
+    Text(name, fontSize = 18.sp, color = MaterialTheme.colors.onBackground)
 }
