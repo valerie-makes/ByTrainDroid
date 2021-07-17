@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -60,15 +61,20 @@ fun Planner(navController: NavController) {
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
+    // While scrolling down, immediately hide keyboard
+    if (searchFocused && scrollState.value > 0) {
+        focusManager.clearFocus()
+    }
+
     Column(
         if (searchText.isEmpty()) {
-            Modifier.verticalScroll(scrollState, enabled = !searchFocused)
+            Modifier.verticalScroll(scrollState)
         } else {
             Modifier
         }.padding(top = 16.dp)
     ) {
         Column(Modifier.padding(horizontal = 16.dp)) {
-            AnimatedVisibility(visible = !resultsMode) {
+            AnimatedVisibility(visible = searchText.isEmpty()) {
                 TitleText(stringResource(R.string.planner))
             }
 
@@ -78,11 +84,14 @@ fun Planner(navController: NavController) {
                 Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        searchFocused = it.isFocused
-                        if (searchFocused) scope.launch {
-                            scrollState.animateScrollTo(0)
-                        }
+                    .onFocusChanged { state ->
+                        scope
+                            .launch {
+                                if (state.isFocused) scrollState.animateScrollTo(0)
+                            }
+                            .invokeOnCompletion {
+                                searchFocused = state.isFocused
+                            }
                     },
                 label = { Text(stringResource(R.string.search_stations)) },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
@@ -190,9 +199,17 @@ private fun MainContent(
 
 @Composable
 private fun SearchResults(searchText: String) {
+    val listState = rememberLazyListState()
+    val focusManager = LocalFocusManager.current
+
+    // While scrolling, immediately hide keyboard
+    if (listState.isScrollInProgress) {
+        focusManager.clearFocus()
+    }
+
     val matchedStations = allStations.filter { it.name.contains(searchText, ignoreCase = true) }
 
-    LazyColumn {
+    LazyColumn(state = listState) {
         item {
             Spacer(Modifier.height(12.dp))
 
