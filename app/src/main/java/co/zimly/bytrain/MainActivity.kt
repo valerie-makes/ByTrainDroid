@@ -8,7 +8,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import co.zimly.bytrain.theme.ByTrainTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,15 +32,5 @@ class MainActivity : ComponentActivity() {
 fun ByTrainApp() {
     SheetProvider {
         AppScaffold()
-    }
-}
-
-@ExperimentalAnimationApi
-@ExperimentalMaterialApi
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ByTrainTheme {
-        ByTrainApp()
     }
 }
