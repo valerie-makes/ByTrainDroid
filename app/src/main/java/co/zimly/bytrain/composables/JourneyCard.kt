@@ -35,7 +35,7 @@ fun JourneyCard(from: Station, to: Station, modifier: Modifier = Modifier) {
                     Text(
                         stringResource(R.string.to) + " ",
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.SemiBold,
                     )
                     StationText(to.name)
                 }
@@ -49,5 +49,10 @@ fun JourneyCard(from: Station, to: Station, modifier: Modifier = Modifier) {
 // TODO: extract for use elsewhere in the app
 @Composable
 private fun StationText(name: String) {
-    Text(name, fontSize = 18.sp, color = MaterialTheme.colors.onBackground)
+    Text(
+        name,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Medium,
+        color = MaterialTheme.colors.onBackground,
+    )
 }
